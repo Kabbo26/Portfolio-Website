@@ -30,8 +30,8 @@ html {
 }
 
 body {
-  color: linear-gradient(to bottom, #051f51, #024796);
   min-height: 100vh;
+  background: transparent;
 }
 
 /* Top Bar background and text */
@@ -41,7 +41,11 @@ header {
   left: 0;
   width: 100%;
   padding: 2rem 9%;
-  background: linear-gradient(to top, #ab5a03, #e87d0d);
+   background: linear-gradient(to top, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.35));
+  backdrop-filter: blur(38px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%); /* Safari needs the prefix */
+  border-bottom: 1px solid rgba(255, 0, 0, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -82,7 +86,22 @@ nav a {
 
 nav a:hover,
 nav a.active {
-  color: #051f51;
+   background-image: linear-gradient(to right, #8a582f, #663D26);
+  
+  /* 2. Clip the background to the text shape */
+  -webkit-background-clip: text;
+  background-clip: text;
+  
+  /* 3. Make the actual text transparent so the background shows through */
+  color: transparent;
+  
+  /* Optional: keeps the layout stable if you have borders or specific displays */
+  display: inline-block;
+
+text-shadow: 0 0 10px #C78047; 
+ 
+  /* Smooth transition for the glow */
+  transition: 0.5s;
 }
 
 #menu-icon {
@@ -90,18 +109,33 @@ nav a.active {
   display: none;
 }
 
-/* board background and text */
-.bars-box {
-  position: absolute;
+#gradientCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
+  z-index: -1;          /* sits behind everything */
+  pointer-events: none; /* never blocks clicks */
+  display: block;
+}
+
+/* board background and text */
+.bars-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
   display: flex;
+  z-index: -1; /* This forces the wipe animation over all other content */
+  pointer-events: none;
 }
 
 .bars-box .bar {
 width: 100%;
 height: 100%;
-background: linear-gradient(to bottom, #11398a, #024796);
+background: linear-gradient(to bottom, #213352, #663D26);
 animation: hide-bars .3s ease-in-out both;
 animation-delay: calc(.035s * var(--i));
 }
@@ -142,7 +176,7 @@ section {
   visibility: hidden;
   opacity: 0;
   overflow: hidden;
-  background: linear-gradient(to bottom, #051f51, #024796);
+ background: transparent;
 }
 
 section.active {
@@ -164,6 +198,7 @@ section.active {
   align-items: center;
   gap: 5rem;
   color: #ffff;
+  background: transparent 
 }
 
 .home-details h1 {
@@ -179,7 +214,7 @@ section.active {
 
 .home-details h2 span {
   position: relative;
-  display: inline-block;
+  display: inline-block; 
   color: transparent;
   -webkit-text-stroke: 0.07rem #e87d0d;
   animation: display-text 16s linear infinite;
@@ -198,7 +233,10 @@ section.active {
   position: absolute;
   width: 0;
   border-right: 0.2rem solid #e87d0d;
-  color: #e87d0d;
+  background: linear-gradient(to bottom, #d56f02, #f68308);
+ -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   white-space: nowrap;
   overflow: hidden;
   animation: fill-text 4s linear infinite;
@@ -380,8 +418,12 @@ section.active {
 }
 
 .heading span {
-  color: #e87d0d;
+  background: linear-gradient(to bottom, #8f4b03, #e87e0d);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
+
 
 .service-container {
   display: grid;
@@ -936,26 +978,32 @@ section.active {
   }
 
   nav {
-    position: absolute;
+    position: fixed;
     top: 100%;
     left: 0;
     width: 100%;
     padding: 1rem 0;
-    background: linear-gradient(to top, #ab5a03, #e87d0d);
+ background: linear-gradient(to top, #213352, #152339);
+  backdrop-filter: blur(30px) saturate(260%);
+  -webkit-backdrop-filter: blur(30px) saturate(260%); /* Safari needs the prefix */
+  border-bottom: 1px solid rgba(255, 0, 0, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    
     border-top: .3rem solid rgba(0, 0, 0, .2);
-    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .2);
+    
     text-align: center;
     display: none;
+    flex-direction: column; /* Ensure vertical stacking */
   }
 
   nav.active{
-    display: block;
+    display: flex;
 
   }
 
   nav a {
     display: block;
-    margin: 2rem 0;
+    margin: 1.5rem 0;
   }
 
   .home {
@@ -1440,3 +1488,5 @@ section.active {
   }
 }
 }
+
+
